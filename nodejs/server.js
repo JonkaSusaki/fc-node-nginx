@@ -12,8 +12,11 @@ const connection = mysql.createConnection(config)
 
 const sql = `CREATE TABLE people (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))`
 connection.query(sql)
+connection.end()
 
 app.get('/', async (req, res) => {
+
+  const connection = mysql.createConnection(config)
   const sqlInsert = `INSERT INTO people (name) VALUES ('Joao - ${new Date().toISOString()}')`
   connection.query(sqlInsert)
 
@@ -35,6 +38,8 @@ app.get('/', async (req, res) => {
   results.forEach((result) => {
     peopleString += `<p>${result.name}</p>`
   })
+
+  connection.end();
 
   responseString += peopleString
 
