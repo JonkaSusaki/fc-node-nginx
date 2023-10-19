@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+    image: joaosusaki/fc-nnm-nginx
+    container_name: fc-nginx
+    ports:
+      - "8080:80"
+    networks:
+      - nginx-nodejs
+    depends_on:
+      - node
+
+  node:
+    build:
+      context: ./nodejs
+    image: joaosusaki/fc-nnm-node
+    container_name: fc-node
+    networks:
+      - nginx-nodejs
+    depends_on:
+      - mysql
+
+  mysql:
+    build:
+      context: ./mysql
+    image: joaosusaki/fc-nnm-mysql
+    container_name: fc-mysql
+    networks:
+      - nginx-nodejs
+
+networks:
+  nginx-nodejs:
+    driver: bridge
+    
